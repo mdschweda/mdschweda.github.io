@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Swipe Test</title>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+    <style type="text/css">
+        html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+            /* CSS Reset */
+            background: transparent; border: 0; font-size: 100%; margin: 0; padding: 0; outline: 0; vertical-align: baseline;
+        }
+
+        #nav, #swipearea {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 4;
+        }
+
+        #swipearea {
+            /* 2em height + 2 * 0.5em padding */
+            height: 3em;
+            z-index: 3;
+        }
+
+        #nav a {
+            /* Fix für Nervleerzeichen */
+            text-decoration: none;
+        }
+
+        #nav svg {
+            fill: #003;
+            height: 2em;
+            width: 2em;
+        }
+
+        /* Ausgeklappt */
+        #nav.visible, #nav:hover {
+            padding: 0.5em 0;
+            height: 2em;
+            background: #f33;
+            transition: height 500ms, padding 500ms;
+        }
+
+        /* Eingeklappt */
+        #nav.collapsed {
+            height: 0.25em;
+            padding: 0;
+            /* Keine Mausinteraktion mehr, darunterliegende #swipearea freigeben */
+            pointer-events: none;
+        }
+
+        .visible svg {
+            opacity: initial;
+            transition: opacity 250ms;
+            transition-delay: 250ms;
+        }
+
+        .collapsed svg {
+            opacity: 0;
+            transition-delay: inherit;
+        }
+
+        body {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            /* 2em height + 2 * 0.5em padding */
+            margin-top: 3em;
+        }
+
+    </style>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+
+        $(window).on("scroll touchmove", function () {
+            $('#nav').toggleClass('collapsed',
+                $(document).scrollTop() > 0 &&
+                !$('#nav').is(':hover') &&
+                !$('#swipearea').is(':hover'));
+        });
+
+        $(window).load(function () {
+
+            $('#nav').mouseleave(function (e) {
+                if ($(document).scrollTop() > 0)
+                    $('#nav').addClass('collapsed');
+            });
+
+            $('#swipearea').mouseenter(function () {
+                $('#nav').removeClass('collapsed');
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div id="nav" class="visible">
+        <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 90 90">
+                <polygon points="75.039,82.882 58.363,82.882 58.363,56.941 32.422,56.941 32.422,82.882 15.745,82.882 15.745,45.823 12.039,45.823 12.039,86.588 36.128,86.588 36.128,60.647 54.657,60.647 54.657,86.588 78.745,86.588    78.745,45.823 75.039,45.823  " />
+                <polygon points="48.424,4.027 48.478,3.973 45.858,1.353 28.716,18.495 28.716,5.059 25.01,5.059 25.01,22.201 0,47.211 2.62,49.831 45.804,6.648 87.242,49.831 89.863,47.211  " />
+            </svg>
+        </a>
+        <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 100 100">
+                <path d="M50,100c-1.833,0-3.541-0.821-4.686-2.252L13.638,58.151c-1.433-1.79-1.716-4.281-0.724-6.347  c0.995-2.067,3.117-3.401,5.408-3.401H26c1.103,0,2-0.897,2-2v-40c0-3.309,2.691-6,6-6c1.104,0,2,0.896,2,2s-0.896,2-2,2  c-1.103,0-2,0.897-2,2v40c0,3.309-2.691,6-6,6h-7.678c-0.764,0-1.472,0.445-1.804,1.135c-0.33,0.688-0.235,1.518,0.242,2.115  L48.438,95.25c0.764,0.953,2.36,0.953,3.122,0l31.679-39.597c0.478-0.598,0.572-1.428,0.241-2.116s-1.039-1.134-1.803-1.134H74  c-3.309,0-6-2.691-6-6v-40c0-1.103-0.897-2-2-2H42c-1.104,0-2-0.896-2-2s0.896-2,2-2h24c3.309,0,6,2.691,6,6v40c0,1.103,0.897,2,2,2  h7.678c2.291,0,4.413,1.334,5.407,3.4c0.993,2.066,0.71,4.558-0.723,6.348L54.685,97.748C53.541,99.179,51.833,100,50,100z" />
+            </svg>
+        </a>
+        <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 100 100">
+                <path d="M66,100c-1.104,0-2-0.896-2-2s0.896-2,2-2c1.103,0,2-0.897,2-2V54c0-3.309,2.691-6,6-6h7.678  c0.764,0,1.472-0.445,1.804-1.134c0.33-0.688,0.235-1.519-0.242-2.115L51.562,5.154c-0.764-0.954-2.36-0.954-3.124,0L16.761,44.75  c-0.478,0.597-0.572,1.427-0.241,2.116C16.851,47.555,17.558,48,18.322,48H26c3.309,0,6,2.691,6,6v40c0,1.103,0.897,2,2,2h24  c1.104,0,2,0.896,2,2s-0.896,2-2,2H34c-3.309,0-6-2.691-6-6V54c0-1.103-0.897-2-2-2h-7.678c-2.292,0-4.415-1.335-5.408-3.401  c-0.993-2.067-0.709-4.558,0.723-6.348L45.315,2.655C46.46,1.224,48.167,0.403,50,0.403c1.833,0,3.54,0.821,4.685,2.252  l31.678,39.596c1.433,1.79,1.717,4.281,0.724,6.348C86.091,50.666,83.969,52,81.678,52H74c-1.103,0-2,0.897-2,2v40  C72,97.309,69.309,100,66,100z" />
+            </svg>
+        </a>
+        <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 100 100">
+                <path d="M6.407,19.206h87.221c0.777,0,1.407,0.63,1.407,1.407v2.814 c0,0.777-0.63,1.407-1.407,1.407H6.407C5.63,24.833,5,24.203,5,23.426v-2.814C5,19.836,5.63,19.206,6.407,19.206z" />
+                <path d="M6.407,47.341h87.221c0.777,0,1.407,0.63,1.407,1.407v2.814 c0,0.777-0.63,1.407-1.407,1.407H6.407C5.63,52.969,5,52.339,5,51.562v-2.814C5,47.971,5.63,47.341,6.407,47.341z" />
+                <path d="M6.407,75.477h87.221c0.777,0,1.407,0.63,1.407,1.407v2.814 c0,0.777-0.63,1.407-1.407,1.407H6.407C5.63,81.105,5,80.475,5,79.698v-2.814C5,76.107,5.63,75.477,6.407,75.477z" />
+            </svg>
+        </a>
+        <a href="#">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">
+                <path d="M67.361,80.736c-0.68,0.679-0.68,1.772,0,2.451l13.368,13.369c2.421,2.42,5.172,3.438,7.805,3.438
+                    c3.036,0,5.925-1.336,8.016-3.438c2.062-2.052,3.271-4.674,3.43-7.391c0.192-3.092-0.997-5.999-3.43-8.43L83.183,67.368
+                    c-0.68-0.683-1.772-0.683-2.453,0c-0.669,0.677-0.669,1.772,0,2.448l13.369,13.371c3.779,3.77,2.718,8.199,0,10.914
+                    c-2.719,2.721-7.146,3.783-10.916,0L69.813,80.736C69.136,80.055,68.041,80.055,67.361,80.736z" />
+                <path d="M0,41.85c0,23.074,18.771,41.845,41.846,41.845c23.075,0,41.846-18.771,41.846-41.845
+                    c0-23.075-18.771-41.846-41.846-41.846C18.771,0.004,0,18.775,0,41.85z M3.461,41.85c0-21.161,17.223-38.382,38.385-38.382
+                    c21.163,0,38.386,17.221,38.386,38.382c0,21.164-17.223,38.375-38.386,38.375C20.684,80.225,3.461,63.014,3.461,41.85z" />
+                <path d="M8.918,41.849c0,8.793,3.42,17.065,9.643,23.286c6.223,6.225,14.484,9.643,23.285,9.643c8.793,0,17.065-3.418,23.286-9.643
+                    c0.681-0.678,0.681-1.775,0-2.451c-0.68-0.681-1.773-0.681-2.452,0c-5.563,5.564-12.965,8.633-20.834,8.633
+                    c-7.867,0-15.27-3.069-20.832-8.633c-5.563-5.562-8.633-12.966-8.633-20.833c0-7.868,3.069-15.267,8.633-20.841
+                    c0.668-0.671,0.668-1.763,0-2.444c-0.679-0.68-1.772-0.68-2.453,0C12.338,24.786,8.918,33.048,8.918,41.849z" />
+                <path d="M62.682,21.02c5.563,5.563,8.631,12.962,8.631,20.83c0,0.957,0.776,1.731,1.731,1.731c0.956,0,1.73-0.774,1.73-1.731
+                    c0-8.802-3.42-17.064-9.643-23.285c-6.222-6.22-14.493-9.649-23.286-9.649c-0.955,0-1.73,0.773-1.73,1.739
+                    c0,0.957,0.775,1.732,1.73,1.732C49.715,12.387,57.116,15.444,62.682,21.02z" />
+            </svg>
+        </a>
+        <a href="#">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 256 67.855">
+                <path d="M33.928,67.856C15.221,67.856,0,52.631,0,33.927C0,15.223,15.221,0,33.928,0c18.707,0,33.927,15.224,33.927,33.928
+                    C67.855,52.631,52.634,67.856,33.928,67.856z M33.928,6.169c-15.305,0-27.759,12.452-27.759,27.759
+                    c0,15.308,12.455,27.761,27.759,27.761c15.304,0,27.759-12.452,27.759-27.761C61.687,18.62,49.232,6.169,33.928,6.169z" />
+                <path d="M127.784,67.856c-18.709,0-33.928-15.226-33.928-33.929C93.856,15.223,109.077,0,127.784,0
+                    c18.706,0,33.928,15.224,33.928,33.928C161.712,52.631,146.486,67.856,127.784,67.856z M127.784,6.169
+                    c-15.308,0-27.759,12.452-27.759,27.759c0,15.308,12.455,27.761,27.759,27.761c15.308,0,27.759-12.452,27.759-27.761
+                    C155.543,18.62,143.092,6.169,127.784,6.169z" />
+                <path d="M222.072,67.856c-18.703,0-33.928-15.226-33.928-33.929C188.145,15.223,203.369,0,222.072,0S256,15.223,256,33.927
+                    C256,52.631,240.775,67.856,222.072,67.856z M222.072,6.169c-15.309,0-27.76,12.452-27.76,27.759
+                    c0,15.308,12.451,27.761,27.76,27.761c15.308,0,27.76-12.452,27.76-27.761C249.832,18.62,237.38,6.169,222.072,6.169z" />
+            </svg>
+        </a>
+    </div>
+    <div id="swipearea"></div>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p style="color: red">Log Log Log</p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+
+    <p>Scroll, scroll, scroll your page,</p>
+    <p>Gently down the screen.</p>
+    <p>Merrily, merrily, merrily, merrily,</p>
+    <p>Life is but a dream.<br /></p>
+</body>
+</html>
